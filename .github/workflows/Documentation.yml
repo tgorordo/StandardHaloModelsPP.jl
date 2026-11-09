@@ -42,7 +42,7 @@ jobs:
         run: nix develop --command julia --project=docs/ docs/make.jl
       - name: Upload documentation artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs-${{ github.run_id }}
           path: |
