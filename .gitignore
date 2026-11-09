@@ -1,0 +1,13 @@
+Manifest.toml
+
+docs/build/*
+docs/pdf/*
+docs/html/*
+
+# Asymptote output, regenerated from the tracked .asy sources by docs/make.jl
+docs/src/figs/*.pdf
+
+# Nix / direnv
+result
+result-*
+.direnv/
