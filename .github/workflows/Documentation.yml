@@ -1,0 +1,52 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+    tags: '*'
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  build:
+    permissions:
+      contents: write
+      pull-requests: read
+      statuses: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - name: Cache Julia depot
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.julia/artifacts
+            ~/.julia/packages
+            ~/.julia/compiled
+            ~/.julia/registries
+          key: julia-docs-${{ runner.os }}-${{ hashFiles('flake.lock', 'Project.toml', 'docs/Project.toml') }}
+          restore-keys: julia-docs-${{ runner.os }}-
+      - name: Toolchain versions
+        run: nix develop --command bash -c 'julia --version && asy -version && latexmk -version && gs --version'
+      - name: Install dependencies
+        run: nix develop --command julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Build and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: nix develop --command julia --project=docs/ docs/make.jl
+      - name: Upload documentation artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-${{ github.run_id }}
+          path: |
+            docs/html/
+            docs/src/figs/*.html
+            docs/src/figs/*.pdf
+          if-no-files-found: warn

@@ -1,0 +1,4 @@
+# DefaultStyle, matching existing source conventions.
+indent = 4
+margin = 92
+format_docstrings = false
