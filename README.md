@@ -43,7 +43,7 @@ If you use this package, you should likely cite at least (see [`CITATION.bib`](C
 
 [3]: [C. McCabe, *JCAP* **02**, 027 (2014)](https://doi.org/10.1088/1475-7516/2014/02/027) ([arXiv:1312.1355](https://arxiv.org/abs/1312.1355)), for the Earth ephemeris.
 
-See also the [References in the documentation](https://tgorordo.github.io/StandardHaloModelsPP.jl/ref/) for some further attribution.
+See also the [References in the documentation](https://tgorordo.github.io/StandardHaloModelsPP.jl/stable/ref/) for some further attribution.
 Otherwise, the source of this package is licensed under the very permissive [MIT License](LICENSE) - do with it what you will! 
 
 ## Development
